@@ -1,10 +1,12 @@
 //import http from "http";
 import express, { Express } from "express";
 import { corsHandler } from "./middlewares/corsHandler";
+import cors from "cors";
 import { userRouter } from "./routes/user";
 import { routeNotFound } from "./middlewares/routeNotFound";
 import { DATABASE_DEVELOPMENT, SERVER_PORT } from "./config/config";
 import { connectDatabase } from "./database/database";
+import path from "path";
 
 class Server {
   private app: Express;
@@ -17,7 +19,6 @@ class Server {
     this.app = express();
     this.port = SERVER_PORT;
 
-    this.app.use(express.static("public"));
     this.database();
     this.middlewares();
     this.routes();
@@ -28,13 +29,15 @@ class Server {
   }
 
   middlewares() {
-    this.app.use(corsHandler);
+    //this.app.use(corsHandler);
+    this.app.use(cors());
     this.app.use(express.json());
+    this.app.use("/", express.static(path.resolve(__dirname, "./public")));
   }
 
   routes() {
     this.app.use(this.routePaths.user, userRouter);
-    this.app.use(routeNotFound);
+    //this.app.use(routeNotFound);
   }
 
   listen() {
