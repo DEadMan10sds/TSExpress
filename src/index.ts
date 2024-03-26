@@ -1,4 +1,4 @@
 import Server from "./server";
 
-const server = Server;
+const server = new Server();
 server.listen();
