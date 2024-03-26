@@ -17,6 +17,7 @@ class Server {
     this.app = express();
     this.port = SERVER_PORT;
 
+    this.app.use(express.static("public"));
     this.database();
     this.middlewares();
     this.routes();
