@@ -7,12 +7,14 @@ import { routeNotFound } from "./middlewares/routeNotFound";
 import { DATABASE_DEVELOPMENT, SERVER_PORT } from "./config/config";
 import { connectDatabase } from "./database/database";
 import path from "path";
+import { healthRouter } from "./routes/health";
 
 class Server {
   private app: Express;
   private port: Number;
   private routePaths = {
     user: "/api/user",
+    health: "/health",
   };
 
   constructor() {
@@ -37,6 +39,7 @@ class Server {
 
   routes() {
     this.app.use(this.routePaths.user, userRouter);
+    this.app.use(this.routePaths.health, healthRouter);
     //this.app.use(routeNotFound);
   }
 
