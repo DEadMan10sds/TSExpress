@@ -8,6 +8,7 @@ export async function connectDatabase(uri: string) {
     client.connect().then((client) => {
       dbConnection = client.db();
     });
+    await client.db("admin").command({ ping: 1 });
     console.log("Database connected succesfully");
     return dbConnection;
   } catch (error) {
