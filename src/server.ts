@@ -9,13 +9,15 @@ import { connectDatabase, setCollections } from "./database/database";
 import path from "path";
 import { healthRouter } from "./routes/health";
 import { articleRouter } from "./routes/articles";
+import { authRouter } from "./routes/auth";
 
 class Server {
   private app: Express;
   private port: Number;
   private routePaths = {
-    user: "/api/user",
     article: "/api/article",
+    auth: "/api/auth",
+    user: "/api/user",
     health: "/health",
   };
 
@@ -45,8 +47,9 @@ class Server {
   }
 
   routes() {
-    this.app.use(this.routePaths.user, userRouter);
     this.app.use(this.routePaths.article, articleRouter);
+    this.app.use(this.routePaths.auth, authRouter);
+    this.app.use(this.routePaths.user, userRouter);
     this.app.use(this.routePaths.health, healthRouter);
     this.app.use(routeNotFound);
   }

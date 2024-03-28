@@ -20,3 +20,5 @@ export const SERVER = {
 
 export const ALLOW_VALIDATIONS: boolean =
   process.env.VALIDATORS === "true" || false;
+
+export const SECRET_KEY = String(process.env.SECRET_KEY);

@@ -21,7 +21,6 @@ export async function connectDatabase(uri: string) {
     console.log("Active validators for documents: ", ALLOW_VALIDATIONS);
 
     Object.keys(validators).forEach(async (collectionToValidate) => {
-      console.log();
       const collectionExists = await dbConnection
         .listCollections({
           name: collectionToValidate,

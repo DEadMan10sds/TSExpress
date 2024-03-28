@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { collections } from "../database/database";
-import { objectResponse } from "../interfaces/objectResponse";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 import { filterAttributes } from "../helpers/filterAttributes";

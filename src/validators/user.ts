@@ -19,5 +19,5 @@ export const userValidationOptions = {
     },
   },
   validationLevel: "strict",
-  validationAction: "error",
+  validationAction: "warn",
 };
