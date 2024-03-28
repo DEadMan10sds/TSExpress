@@ -17,3 +17,6 @@ export const SERVER = {
   SERVER_HOSTNAME,
   SERVER_PORT,
 };
+
+export const ALLOW_VALIDATIONS: boolean =
+  process.env.VALIDATORS === "true" || false;

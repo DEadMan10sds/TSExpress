@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import { filterAttributes } from "../helpers/filterAttributes";
 
 let defaultQuery: any = {
-  active: 1,
+  active: true,
 };
 
 const getUsers = async (req: Request, res: Response) => {
@@ -104,7 +104,6 @@ const deleteUser = async (req: Request, res: Response) => {
 
   try {
     const deletedUser = await collections.users.findOneAndDelete({ _id: id });
-    console.log(deletedUser);
 
     return res.status(200).json({
       message: "Usuario eliminado",
@@ -122,14 +121,11 @@ const softDeleteUser = async (req: Request, res: Response) => {
   const id = new ObjectId(req.params.id);
 
   try {
-    console.log(id);
-
     const deactivateUser = await collections.users.findOneAndUpdate(
       { _id: id },
-      { $set: { active: 0 } },
+      { $set: { active: false } },
       { upsert: true }
     );
-    console.log(deactivateUser);
 
     return res.status(200).json({
       message: "Usuario eliminado",
