@@ -5,15 +5,17 @@ import cors from "cors";
 import { userRouter } from "./routes/user";
 import { routeNotFound } from "./middlewares/routeNotFound";
 import { DATABASE_DEVELOPMENT, SERVER_PORT } from "./config/config";
-import { connectDatabase } from "./database/database";
+import { connectDatabase, setCollections } from "./database/database";
 import path from "path";
 import { healthRouter } from "./routes/health";
+import { articleRouter } from "./routes/articles";
 
 class Server {
   private app: Express;
   private port: Number;
   private routePaths = {
     user: "/api/user",
+    article: "/api/article",
     health: "/health",
   };
 
@@ -27,7 +29,12 @@ class Server {
   }
 
   async database() {
-    await connectDatabase(DATABASE_DEVELOPMENT);
+    try {
+      await connectDatabase(DATABASE_DEVELOPMENT);
+      await setCollections();
+    } catch (error) {
+      console.log("Error al establecer conexión con la BD o las collecciones");
+    }
   }
 
   middlewares() {
@@ -39,8 +46,9 @@ class Server {
 
   routes() {
     this.app.use(this.routePaths.user, userRouter);
+    this.app.use(this.routePaths.article, articleRouter);
     this.app.use(this.routePaths.health, healthRouter);
-    //this.app.use(routeNotFound);
+    this.app.use(routeNotFound);
   }
 
   listen() {

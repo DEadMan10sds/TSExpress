@@ -1,21 +1,36 @@
 import { Request, Response } from "express";
-import { dbConnection } from "../database/database";
+import { collections } from "../database/database";
 import { objectResponse } from "../interfaces/objectResponse";
-import { User } from "../interfaces/user";
 import { ObjectId } from "mongodb";
+import bcrypt from "bcryptjs";
+import { filterAttributes } from "../helpers/filterAttributes";
+
+let defaultQuery: any = {
+  active: 1,
+};
 
 const getUsers = async (req: Request, res: Response) => {
-  const collection = dbConnection.collection("Users");
-  const { params, query } = req;
+  let { limit = 5, start = 0, active, ...filters }: any = req.query,
+    id;
+  id = req.params.id !== undefined ? new ObjectId(req.params.id) : null;
+
+  const { filteredAttributes, filteredQuery } = filterAttributes(filters);
+
+  if (active !== undefined) defaultQuery.active = active;
 
   try {
     let data;
 
-    data = !params.id
-      ? await collection.find(query).toArray()
-      : await collection.findOne({ _id: new ObjectId(params.id) });
+    data = !id
+      ? await collections.users
+          .find({ ...defaultQuery, ...filteredQuery })
+          .skip(Number(start))
+          .limit(Number(limit))
+          .sort(filteredAttributes)
+          .toArray()
+      : await collections.users.findOne({ _id: id });
 
-    if (data?.length === 0 || !data) {
+    if (!data || (Array.isArray(data) && data?.length === 0)) {
       return res.status(200).json({
         message: "No existen los datos buscados",
       });
@@ -35,19 +50,14 @@ const getUsers = async (req: Request, res: Response) => {
 
 const createUser = async (req: Request, res: Response) => {
   const { body } = req;
-  const collection = dbConnection.collection("Users");
 
   try {
-    const isUser = (body: User): body is User => !!body?.name;
+    if (body.password) {
+      const salt = bcrypt.genSaltSync();
+      body.password = bcrypt.hashSync(body.password, salt);
+    }
 
-    // console.log(isUser(body));
-
-    if (!isUser(body))
-      return res.status(400).json({
-        message: "Favor de ingresar los datos del usuario",
-      });
-
-    const newUserResult = await collection.insertOne(body);
+    const newUserResult = await collections.users.insertOne(body);
 
     return res.status(200).json({
       message: "Usuario guardado correctamente",
@@ -64,18 +74,72 @@ const createUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const data = req.body;
-  const collection = dbConnection.collection("Users");
 
   try {
-    const updatedUser = await collection.findOneAndUpdate({ id }, { ...data });
-    console.log(updatedUser);
+    const updatedUser = await collections.users.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      {
+        $set: data,
+      },
+      {
+        upsert: true,
+      }
+    );
 
     return res.status(200).json({
       message: "Usuario encontrado",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: "Error al actualizar el usuario",
+      error,
+    });
+  }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+  const id = new ObjectId(req.params.id);
+
+  try {
+    const deletedUser = await collections.users.findOneAndDelete({ _id: id });
+    console.log(deletedUser);
+
+    return res.status(200).json({
+      message: "Usuario eliminado",
+      data: deletedUser,
     });
   } catch (error) {
     return res.status(400).json({
-      message: "Error al actualizar el usuario",
+      message: "Error en la consulta",
+      error,
+    });
+  }
+};
+
+const softDeleteUser = async (req: Request, res: Response) => {
+  const id = new ObjectId(req.params.id);
+
+  try {
+    console.log(id);
+
+    const deactivateUser = await collections.users.findOneAndUpdate(
+      { _id: id },
+      { $set: { active: 0 } },
+      { upsert: true }
+    );
+    console.log(deactivateUser);
+
+    return res.status(200).json({
+      message: "Usuario eliminado",
+      data: deactivateUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: "Error en la consulta",
+      error,
     });
   }
 };
@@ -84,4 +148,6 @@ export const userController = {
   getUsers,
   createUser,
   updateUser,
+  deleteUser,
+  softDeleteUser,
 };

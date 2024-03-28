@@ -1,4 +1,4 @@
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, Collection } from "mongodb";
 
 export let dbConnection: Db;
 
@@ -14,4 +14,14 @@ export async function connectDatabase(uri: string) {
   } catch (error) {
     console.log("Error connecting to DataBase", error);
   }
+}
+
+export let collections = {
+  users: {} as Collection<Document>,
+  articles: {} as Collection<Document>,
+};
+
+export async function setCollections() {
+  collections.users = dbConnection.collection("Users");
+  collections.articles = dbConnection.collection("Articles");
 }
