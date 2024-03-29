@@ -1,10 +1,14 @@
 import { MongoClient, Db, Collection } from "mongodb";
-import { userValidationOptions } from "../validators/user";
+import {
+  userValidationOptions,
+  noValidator,
+  articleValidationOptions,
+} from "../validators";
 import { ALLOW_VALIDATIONS } from "../config/config";
-import { noValidator } from "../validators/noValidator";
 
 const validators: any = {
   Users: ALLOW_VALIDATIONS ? userValidationOptions : noValidator,
+  Articles: ALLOW_VALIDATIONS ? articleValidationOptions : noValidator,
 };
 
 export let dbConnection: Db;
