@@ -8,7 +8,7 @@ import { DATABASE_DEVELOPMENT, SERVER_PORT } from "./config/config";
 import { connectDatabase, setCollections } from "./database/database";
 import path from "path";
 import { healthRouter } from "./routes/health";
-import { articleRouter } from "./routes/articles";
+import { articleRouter } from "./routes/article";
 import { authRouter } from "./routes/auth";
 
 class Server {

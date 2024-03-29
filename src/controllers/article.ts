@@ -2,10 +2,7 @@ import { Request, Response } from "express";
 import { collections } from "../database/database";
 import { filterAttributes } from "../helpers/filterAttributes";
 import { ObjectId } from "mongodb";
-
-let defaultQuery: any = {
-  active: true,
-};
+import { defaultQuery } from "../constants/defaultQuery";
 
 const getArticles = async (req: Request, res: Response) => {
   let { limit = 5, start = 0, active, ...filters }: any = req.query,

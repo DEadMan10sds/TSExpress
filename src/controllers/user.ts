@@ -3,10 +3,7 @@ import { collections } from "../database/database";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 import { filterAttributes } from "../helpers/filterAttributes";
-
-let defaultQuery: any = {
-  active: true,
-};
+import { defaultQuery } from "../constants/defaultQuery";
 
 const getUsers = async (req: Request, res: Response) => {
   let { limit = 5, start = 0, active, ...filters }: any = req.query,
