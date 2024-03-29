@@ -49,6 +49,7 @@ const getUsers = async (req: Request, res: Response) => {
 
 const createUser = async (req: Request, res: Response) => {
   const { body } = req;
+  body.active = true;
 
   try {
     if (body.password) {
@@ -75,6 +76,11 @@ const updateUser = async (req: Request, res: Response) => {
   const data = req.body;
 
   try {
+    if (data.password) {
+      const salt = bcrypt.genSaltSync();
+      data.password = bcrypt.hashSync(data.password, salt);
+    }
+
     const updatedUser = await collections.users.findOneAndUpdate(
       { _id: new ObjectId(id) },
       {

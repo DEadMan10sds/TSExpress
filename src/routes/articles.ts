@@ -3,4 +3,8 @@ import { articleController } from "../controllers/articles";
 
 export const articleRouter = Router();
 
-articleRouter.get("/", articleController.getArticles);
+articleRouter.get("/:id?", articleController.getArticles);
+articleRouter.post("/new", articleController.createArticle);
+articleRouter.put("/update/:id", articleController.createArticle);
+articleRouter.put("/soft/:id", articleController.softDeleteArticle);
+articleRouter.delete("/delete/:id", articleController.deleteArticle);

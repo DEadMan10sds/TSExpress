@@ -2,11 +2,15 @@ export const userValidationOptions = {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["name", "password"],
+      required: ["name", "email", "password"],
       properties: {
         name: {
           bsonType: "string",
           description: "El nombre debe ser una cadena y es requerido",
+        },
+        email: {
+          bsonType: "string",
+          description: "El correo debe ser una cadena y es requerido",
         },
         password: {
           bsonType: "string",
