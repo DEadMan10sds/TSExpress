@@ -32,9 +32,9 @@ articleRouter.post(
       .isString()
       .withMessage("El contenido tiene que ser texto"),
     check("imgURL")
-      .optional()
       .isURL()
-      .withMessage("La imagen tiene que ser una URL"),
+      .withMessage("La imagen tiene que ser una URL")
+      .optional(),
     validateJWT,
     validateFields,
   ],
@@ -50,19 +50,19 @@ articleRouter.put(
       .isMongoId()
       .withMessage("El id no es un id de mongo válido"),
     check("title")
-      .optional()
       .withMessage("El título es obligatorio")
       .isString()
-      .withMessage("El título tiene que ser un string"),
+      .withMessage("El título tiene que ser un string")
+      .optional(),
     check("content")
-      .optional()
       .withMessage("El contenido del artículo es obligatorio")
       .isString()
-      .withMessage("El contenido tiene que ser texto"),
+      .withMessage("El contenido tiene que ser texto")
+      .optional(),
     check("imgURL")
-      .optional()
       .isURL()
-      .withMessage("La imagen tiene que ser una URL"),
+      .withMessage("La imagen tiene que ser una URL")
+      .optional(),
     validateJWT,
     validateFields,
   ],
