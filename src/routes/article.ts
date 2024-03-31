@@ -44,7 +44,11 @@ articleRouter.post(
 articleRouter.put(
   "/update/:id",
   [
-    check("id").isMongoId().withMessage("El id no es un id de mongo válido"),
+    check("id")
+      .notEmpty()
+      .withMessage("El id es obligatorio")
+      .isMongoId()
+      .withMessage("El id no es un id de mongo válido"),
     check("title")
       .optional()
       .withMessage("El título es obligatorio")
@@ -68,7 +72,11 @@ articleRouter.put(
 articleRouter.put(
   "/soft/:id",
   [
-    check("id").isMongoId().withMessage("El id no es un id de mongo válido"),
+    check("id")
+      .notEmpty()
+      .withMessage("El id es obligatorio")
+      .isMongoId()
+      .withMessage("El id no es un id de mongo válido"),
     validateJWT,
     validateFields,
   ],
@@ -78,7 +86,11 @@ articleRouter.put(
 articleRouter.delete(
   "/delete/:id",
   [
-    check("id").isMongoId().withMessage("El id no es un id de mongo válido"),
+    check("id")
+      .notEmpty()
+      .withMessage("El id es obligatorio")
+      .isMongoId()
+      .withMessage("El id no es un id de mongo válido"),
     validateJWT,
     validateFields,
   ],
