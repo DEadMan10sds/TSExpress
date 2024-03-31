@@ -8,13 +8,7 @@ export const articleRouter = Router();
 
 articleRouter.get(
   "/:id?",
-  [
-    check("id")
-      .optional()
-      .isMongoId()
-      .withMessage("El id no es un id de mongo válido"),
-    validateFields,
-  ],
+  [check("id").optional().isMongoId(), validateFields],
   articleController.getArticles
 );
 
@@ -31,10 +25,7 @@ articleRouter.post(
       .withMessage("El contenido del artículo es obligatorio")
       .isString()
       .withMessage("El contenido tiene que ser texto"),
-    check("imgURL")
-      .isURL()
-      .withMessage("La imagen tiene que ser una URL")
-      .optional(),
+    check("imgURL", "La imagen tiene que ser una URL").isURL().optional(),
     validateJWT,
     validateFields,
   ],
@@ -49,20 +40,9 @@ articleRouter.put(
       .withMessage("El id es obligatorio")
       .isMongoId()
       .withMessage("El id no es un id de mongo válido"),
-    check("title")
-      .withMessage("El título es obligatorio")
-      .isString()
-      .withMessage("El título tiene que ser un string")
-      .optional(),
-    check("content")
-      .withMessage("El contenido del artículo es obligatorio")
-      .isString()
-      .withMessage("El contenido tiene que ser texto")
-      .optional(),
-    check("imgURL")
-      .isURL()
-      .withMessage("La imagen tiene que ser una URL")
-      .optional(),
+    check("title", "El título tiene que ser un string").isString().optional(),
+    check("content", "El contenido tiene que ser texto").isString().optional(),
+    check("imgURL", "La imagen tiene que ser una URL").isURL().optional(),
     validateJWT,
     validateFields,
   ],
