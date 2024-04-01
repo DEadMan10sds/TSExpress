@@ -1,5 +1,4 @@
 import { WithSidebar } from "@/components/sideBar/SideBar";
-import data from "../../data/ES.json";
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 

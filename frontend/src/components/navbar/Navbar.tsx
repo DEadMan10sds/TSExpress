@@ -52,7 +52,7 @@ export default function Navbar() {
   );
 }
 
-function MenuIcon(props) {
+function MenuIcon(props: any) {
   return (
     <svg
       {...props}
@@ -73,7 +73,7 @@ function MenuIcon(props) {
   );
 }
 
-function MainIcon(props) {
+function MainIcon(props: any) {
   return (
     <div>
       <img
