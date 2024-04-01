@@ -1,0 +1,7 @@
+{
+  "home": {
+    "title": "Documentación",
+    "description": "Esta es la documentación del servidor Node js hecho en typescript usando express para la prueba técnica backend",
+    "moreinfo": "En este servidor se hizo uso de los paquetes exress, el driver shell de mongodb, express-validator y jsonwebtoken para solventar las necesidades de la prueba técnica"
+  }
+}
