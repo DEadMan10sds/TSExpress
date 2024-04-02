@@ -10,7 +10,6 @@ userRouter.get(
   "/get/:id?",
   [
     check("id").isMongoId().withMessage("El id no es un id válido").optional(),
-    validateJWT,
     validateFields,
   ],
   userController.getUsers

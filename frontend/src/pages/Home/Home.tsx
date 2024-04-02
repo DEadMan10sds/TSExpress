@@ -1,19 +1,9 @@
 import { WithSidebar } from "@/components/sideBar/SideBar";
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { sidebarLinks } from "@/data/data";
 
 export function Home() {
-  const sidebarLinks = [
-    {
-      text: "Inicio",
-      to: "/",
-    },
-    {
-      text: "Perfil",
-      to: "/profile",
-    },
-  ];
-
   const CustomHeader = () => {
     return (
       <div className="flex px-4">

@@ -5,7 +5,7 @@ export function InformationDisplay(props: { data: Information[] }) {
   const { data } = props;
 
   return (
-    <div className="container grid gap-12">
+    <div className="pb-24 grid gap-12 ">
       {data.map((dataToShow) => {
         return (
           <div key={dataToShow.title} className="grid gap-4">
@@ -15,9 +15,26 @@ export function InformationDisplay(props: { data: Information[] }) {
               </h1>
               <Separator />
             </div>
-            <div>
-              {dataToShow.content.map((infoToshow, index) => {
-                return <p key={index}>{infoToshow}</p>;
+            <div className="grid gap-2">
+              {dataToShow.content.map((section, sectionIndex) => {
+                return (
+                  <div key={sectionIndex}>
+                    <p>{section.paragraph}</p>
+                    {section.list && (
+                      <ul className="pl-8 list-disc">
+                        {section.list.map((dot, listIndex) => {
+                          return <li key={listIndex}>{dot}</li>;
+                        })}
+                      </ul>
+                    )}
+                    {section.image &&
+                      section.image.map((img, imgIndex) => {
+                        return (
+                          <img key={imgIndex} src={img.src} alt={img.alt} />
+                        );
+                      })}
+                  </div>
+                );
               })}
             </div>
           </div>

@@ -1,5 +1,4 @@
-import { MenuIcon } from "lucide-react";
-
+import { CircleEllipsis } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const WithMobileSidebar = ({
@@ -19,7 +18,7 @@ export const WithMobileSidebar = ({
             {MobileDashboardHeader && <MobileDashboardHeader />}
           </div>
           <SheetTrigger>
-            <MenuIcon size={24} />
+            <CircleEllipsis size={24} />
           </SheetTrigger>
         </div>
         <SheetContent side="left">
