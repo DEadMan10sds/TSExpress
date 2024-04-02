@@ -32,6 +32,14 @@ const router = createBrowserRouter([
             path: "/deploy",
             element: <InformationDisplay data={content.deploy} />,
           },
+          {
+            path: "/authentication",
+            element: <InformationDisplay data={content.authentication} />,
+          },
+          {
+            path: "/crudOperations",
+            element: <InformationDisplay data={content.crudOperations} />,
+          },
         ],
       },
     ],

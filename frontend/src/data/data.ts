@@ -14,6 +14,14 @@ export const sidebarLinks = [
     to: "/architecture",
   },
   {
+    text: "Operaciones CRUD",
+    to: "/crudOperations",
+  },
+  {
+    text: "Autenticación",
+    to: "/authentication",
+  },
+  {
     text: "Despliegue",
     to: "/deploy",
   },
@@ -94,7 +102,7 @@ const usage: Information[] = [
       },
       {
         paragraph:
-          "Debido al tipo de proyecto, en este caso no se está estableciendo ninguna API KEY para controlar y manejar el uso de la API de manera púlbica, ya que no está destinada a un entorno de producción y de uso público.",
+          "Debido al tipo de proyecto, en este caso no se está estableciendo ninguna API KEY para controlar y manejar el uso de dicha API, ya que no está destinada a un entorno ni de producción o de uso público.",
       },
     ],
   },
@@ -125,9 +133,6 @@ const usage: Information[] = [
     title: "Queries aceptables en 'articles' y 'users'",
     content: [
       {
-        paragraph: "",
-      },
-      {
         paragraph:
           "El servidor acepta todas las queries que maneja el driver de mongodb, tanto para ordenamiento, búsqueda específica y paginación, lo cual permite tener una gran flexibilidad al momento de hacer alguna consulta sin tener que hacer mucho manejo de dichas queries. A pesar de esto, para facilitar la paginación y el ordenamiento, hay que hacer cierto manejo de el objeto 'req.queries' que se recibe en el controlador de cada ruta.",
       },
@@ -146,7 +151,7 @@ const usage: Information[] = [
     content: [
       {
         paragraph:
-          "Siguendo con las queries aceptables en las solicitudes de la API, tenemos 2 queries específicas que permiten hacer dicha paginación, estas son: ",
+          "Siguiendo con las queries aceptables en las solicitudes de la API, tenemos 2 queries específicas que permiten hacer dicha paginación, estas son: ",
         list: ["limit", "start"],
       },
       {
@@ -178,7 +183,7 @@ const usage: Information[] = [
     content: [
       {
         paragraph:
-          "Por otro lado, tenemos la ruta 'https://tsexpress.onrender.com/api/auth/login' la cual nos permite iniciar sesión en la API y generar un token para validar el acceso al conjunto completo de rutas de la colección 'Articles' y las rutas de los usuarios que los permiten: ",
+          "Por otro lado, tenemos la ruta 'https://tsexpress.onrender.com/api/auth/login' la cual nos permite iniciar sesión en la API y generar un token para validar el acceso al conjunto completo de rutas de la colección 'Articles' y las rutas de los usuarios que les permiten: ",
         list: ["Editar", "Desactivar", "Eliminar"],
       },
       {
@@ -204,7 +209,7 @@ const architecture: Information[] = [
         list: [
           "bcrypt: Dicho paquete nos permite encriptar las contraseñas de los usuarios o cualquier dato que necesitemos proteger, ya que se estableció un sistema de sesiónes.",
           "cors: Este paquete nos facilita la implementación de precisamente los 'cors', a pesar de esto se desarrolló un middleware personalizado donde se pueden modificar y alterar el manejo de dichos 'cors' a placer del desarrollador, este middleware se encuentra en el archivo 'middlewares/corsHandler.ts'.",
-          "dotenv: Hacer uso de variables de entonrno facilita mucho el manejo de información global como el puerto, la dirección de la base de datos, entre otros, precisamente este paquete implementa esta funcionalidad.",
+          "dotenv: Hacer uso de variables de entorno facilita mucho el manejo de información global como el puerto, la dirección de la base de datos, entre otros, precisamente este paquete implementa esta funcionalidad.",
           "express js: Para establecer directamente el servidor, los middlewares, rutas, puerto y conexión a la base de datos.",
           "express-validator: Habilita la validación de tipos de datos y campos al agregar el middleware 'check' en las rutas deseadas, permitiendo así tener una capa extra de seguridad y retornar un error si un dato es erróneo o faltante.",
           "jsonwebtoken: Nos permite crear un token cifrado que valida la existencia de un usuario y su sesión, se genera al iniciar sesión desde 'https://tsexpress.onrender.com/api/auth/login' y se tiene que agregar dicho token en el header 'x-Token' para el resto de solicitudes que lo requieran.",
@@ -414,12 +419,168 @@ const architecture: Information[] = [
       },
     ],
   },
+  {
+    title: "Controladores",
+    content: [
+      {
+        paragraph:
+          "Como ya se mencionó antes, cada ruta tiene su propio controlador el cual realiza la lógica necesaria, dichos controladores se encuentran en sus propios archivos para mantener una arquitectura limpia (a excepción del health check ya que no cuenta con lógica prácticamente). Y, como es de esperarse, no se llegará a ningún controlador si la solicitud no aprueba las validaciones de los middlewares previamente descritos.",
+      },
+      {
+        paragraph:
+          "Aunado a esto, todos los controladores cuentan con un trycatch que permite atrapar cualquier error sin tener que interrumpir el funcionamiento de la API a no ser que sea un error realmente grave, esto nos permite no hacer uso de paquetes como 'nodemon' aunque dependiendo del contexto y necesidades, puede llegar a ser escencial.",
+      },
+    ],
+  },
+];
+
+const authentication: Information[] = [
+  {
+    title: "Autenticación por jwt",
+    content: [
+      {
+        paragraph:
+          "Para el manejo de sesiones y autenticación de la API, se decidió usar JWT, ya que permite tener una solución rápida y relativamente segura. A través de las demás secciones de la documentación se ha explicado en mayor o menor medida esta funcionalidad sin embargo aquí se profundizará en ella.",
+      },
+      {
+        paragraph:
+          "La autenticación se centra principalmente en el controlador de la ruta de login, ya que aquí se nos permite recibir el correo y contraseña a través del body de la solicitud, posteriormente se hace una búsqueda del usuario mediante el correo para verificar su existencia, en caso de que si se encuentre registrado en la base de datos se hará un encriptado de 1 vía a la contraseña recibida para ser comparada con el hash (resultado de una encriptación) de la contraseña previamente guardada en la base de datos, si ambas coinciden, se elaborará un jwt que contenga el id del usuario en el body de dicho token para facilitar la búsqueda cuando se decodifique. Por otro lado, si en algún momento ocurriese un error, ya sea porque el usuario no existe, no se logró generar el jwt o bien, la contraseña es incorrecta, se disparará un error y se retornará una respuesta con código de error 400 indicando dicho error (sin especificar si la contraseña es incorrecta para evitar en cierta medida la ingeniería social).",
+        image: [
+          {
+            src: "/auth.png",
+            alt: "Auth controller",
+          },
+        ],
+      },
+      {
+        paragraph:
+          "Ya que entendemos cómo funciona la autenticación desde el controlador, tenemos todos los conocimientos necesarios para utilizar el sistema de sesión de la API y poder contar con un grado más de seguridad.",
+      },
+    ],
+  },
+];
+
+const crudOperations: Information[] = [
+  {
+    title: "Operaciones CRUD",
+    content: [
+      {
+        paragraph:
+          "Una de las partes esenciales de toda API es contar con las operaciones CRUD en las tablas o collecciones que lo requieran (generalmente son todas pero se tienen que revisar los requerimientos para una mejor solución). Dado esto, en esta sección se explicarán las operaciones CRUD que se han mencionado a lo largo de esta documentación en mayor detalle.",
+      },
+    ],
+  },
+  {
+    title: "Nuestra API y sus operaciones CRUD",
+    content: [
+      {
+        paragraph:
+          "En esta API se implementaron todas las operaciones crud, sin embargo no nos quedamos ahí ya que decidimos agregar una operación extra la cual es conocida como 'softDelete', a continuación, enlistamos todas las posibles operaciones junto con su tipo de solicitud para una mejor comprensión:",
+        list: [
+          "Create: POST, nos permite generar un nuevo documento de la colección elegida.",
+          "Read: GET, esta solicitud es especial ya que nos permite manejar la búsqueda tanto expecífica (por id o queries) como general (la obtención de todos los documentos de una colección).",
+          "Update: POST, actualiza un documento en específico.",
+          "softDelete: DELETE, al igual que la operación Read, esta solicitud también es especial ya que nos permite desactivar un documento en específico para que sea ignorado en la búsqueda por defecto del resto de operaciones.",
+          "Delete: DELETE. elimina completamente un documento específico, no es recomendable usarlo comúnmente.",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Lectura de documentos",
+    content: [
+      {
+        paragraph:
+          "Para la lectura de documentos se tomó un enfoque especial, ya que se optó por hacer este tipo de controlador más flexible, esto mediante la opción de agregar un id de mongo como parámetro de la ruta sin ser obligatorio, además de aplicar las queries que lleguen en la misma solicitud.",
+      },
+      {
+        paragraph:
+          "Esta flexibilidad se da al verificar si viene o no el id de mongo, esto nos da la oportunidad de alterar la búsqueda en la base de datos a través de un operador ternario como se ve en la imagen:",
+        image: [
+          {
+            src: "/ternarySearch.png",
+            alt: "Ternary search for documents",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Creación de documentos",
+    content: [
+      {
+        paragraph:
+          "La creación es la operación más sencilla, ya que es bastante directa una vez que aprueba todos los middlewares establecidos. Se hace uso del 'insertOne' para crear un nuevo documento en la colección y, al igual que todas las demás solicitudes, se usa un trycatch para cubrir cualquier posible error.",
+      },
+      {
+        paragraph:
+          "Este controlador tiene posibilidad de ser más flexible ya que se pueden alterar los datos antes de ser guardados en la base de datos, como se puede observar en el controlador que genera un nuevo usuario al obtener la contraseña y encriptarla (genera un hash y es el que se guarda en la base de datos).",
+        image: [
+          {
+            src: "/createUser.png",
+            alt: "Create User",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Actualizar, eliminar y desactivar",
+    content: [
+      {
+        paragraph:
+          "Estas 3 operaciones, funcionan prácticamente igual, ya que en todas se establece un id de mongo obligatorio, dado que se hará una modificación a un documento en específico, además de que esto nos permite tener un control a un nivel exacto de información, evitando así usar los campos de los documentos para hacer búsquedas, ya que en caso de que no se usen los validadores tendremos mucha flexibilidad en ellos.",
+        image: [
+          {
+            src: "/softDelete.png",
+            alt: "Soft delete",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 const deploy: Information[] = [
   {
-    title: "Despliegues",
-    content: [],
+    title: "Plataforma",
+    content: [
+      {
+        paragraph:
+          "La plataforma elegida para el despliegue de la API es 'Render' ya que su capa gratuita nos permite tener el funcionamiento mínimo, además de mantener un entorno estable de node para generar la build de la API, establecer las variables de entorno de manera sencilla y (en proyectos grandes puede ser contraproducente) no requiere configurar un Hash de acceso. Además de que, como muchas otras plataformas, nos permite conectar el servidor de despliegues con el propio repositorio del servidor.",
+      },
+    ],
+  },
+  {
+    title: "Servidor de mongo (cluster)",
+    content: [
+      {
+        paragraph:
+          "A diferencia de plataformas como Vercel o Evennode, render no te proporciona con ningún servicio de base de datos de mongo (durante mi investigación solo se encontraron las bases de datos redis y PostgreSQL), por lo que se tuvo que optar por establecer un clúster de mongo propio, lo cual nos permite tener un control más directo de los accesos aunque para esta ocasión se agregaron en la whitelist todas las direcciones ip y solo se hace una validación de usuario mediante contraseña para poder acceder a dicha base de datos.",
+      },
+    ],
+  },
+  {
+    title: "Documentación",
+    content: [
+      {
+        paragraph:
+          "Como se puede observar, la documentación se encuentra en el mismo servidor de la API, ya que se aprovecha el hecho de que el servidor bakcend puede retornar html y Javascript al acceder a la carpeta 'public', además de que en caso de un 404 se retorna a la página principal de la documentación (dando así una capa de seguridad extra), por lo que se tomó la decisión de realizar dicha documentación con el framework React y establecer la ruta de la build en la carpeta public de la API, teniendo así todo el sistema centralizado y explotando las oportunidades de las tecnologías usadas.",
+      },
+    ],
+  },
+  {
+    title: "Posibles errores",
+    content: [
+      {
+        paragraph:
+          "Dado que se está usando la capa gratuita de render, se establece automáticamente que la instancia del servidor se apagará cuando haya cierta inactividad, lo que puede retrasar las solicitudes durante 50 segundos o más, en caso de que esto suceda favor de ponerse en contacto para revisar si el servidor se encuentra en estado de falla o apagado.",
+      },
+      {
+        paragraph:
+          "De igual manera, la instancia de la base de datos puede llegar a apagarse de manera automática, por lo que también se solicita que en dado caso, ponerse en contacto conmigo para hacer una revisión y las correcciones necesarias.",
+      },
+    ],
   },
 ];
 
@@ -435,5 +596,7 @@ export const content = {
   usage,
   architecture,
   deploy,
+  authentication,
+  crudOperations,
   front,
 };

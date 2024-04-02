@@ -10,7 +10,7 @@ export function InformationDisplay(props: { data: Information[] }) {
         return (
           <div key={dataToShow.title} className="grid gap-4">
             <div>
-              <h1 className="font-bold uppercase text-3xl">
+              <h1 className="font-bold uppercase text-3xl mb-2">
                 {dataToShow.title}
               </h1>
               <Separator />
