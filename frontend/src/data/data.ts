@@ -25,6 +25,10 @@ export const sidebarLinks = [
     text: "Despliegue",
     to: "/deploy",
   },
+  {
+    text: "Video",
+    to: "/video",
+  },
   // {
   //   text: "Frontend",
   //   to: "/front",
