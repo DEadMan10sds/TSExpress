@@ -47,7 +47,7 @@ userRouter.post(
 userRouter.put(
   "/update/:id",
   [
-    validateJWT,
+    check("x-Token").custom(validateJWT),
     check("id")
       .isMongoId()
       .withMessage("El id no es un id válido")
@@ -84,7 +84,7 @@ userRouter.put(
       .withMessage("El id no es un id válido")
       .notEmpty()
       .withMessage("El id es obligatorio"),
-    validateJWT,
+    check("x-Token").custom(validateJWT),
     validateFields,
   ],
   userController.softDeleteUser
@@ -98,7 +98,7 @@ userRouter.delete(
       .withMessage("El id no es un id válido")
       .notEmpty()
       .withMessage("El id es obligatorio"),
-    validateJWT,
+    check("x-Token").custom(validateJWT),
     validateFields,
   ],
   userController.deleteUser

@@ -397,7 +397,7 @@ const architecture: Information[] = [
           "Este middleware personalizado nos permite acceder al header 'x-Token' si existe en la solicitud para verificar la autorización de la sesión ya que, en caso de que exista, se decodificará y nos dejará libre la información básica del usuario como su Id de mongo con el cual haremos una búsqueda en la base de datos para verificar que existe el usuario y no estamos sufriendo algún tipo de ataque. En caso de que la solicitud no cuente con el header, el jwt no se decodifique de manera correcta o el usuario no exista, se retornará un error.",
         image: [
           {
-            src: "/validateJTW.png",
+            src: "/validateJWT.png",
             alt: "Validate JWT",
           },
         ],

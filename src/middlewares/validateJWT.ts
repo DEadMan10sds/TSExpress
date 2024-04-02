@@ -4,32 +4,22 @@ import { ObjectId } from "mongodb";
 import { SECRET_KEY } from "../config/config";
 import { collections } from "../database/database";
 
-export async function validateJWT(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function validateJWT(value: any, { req }: any) {
   const token = req.header("x-Token");
-  if (!token) return res.status(401).redirect("/");
+  if (!token) throw new Error("El token de sesión es obligatorio");
 
   try {
     const { uid } = jsonwebtoken.verify(token, SECRET_KEY) as JwtPayload;
-    let id = new ObjectId(String(uid));
+    const id = new ObjectId(String(uid));
 
     const existsUser: any = await collections.users.findOne({
       _id: id,
     });
 
-    if (!existsUser || !existsUser.active)
-      return res.status(400).json({
-        message: "El usuario no está autorizado",
-      });
+    if (!existsUser || !existsUser.active) {
+      throw new Error("El usuario no está autorizado");
+    }
   } catch (error) {
-    console.log(error);
-    res.status(401).json({
-      msg: "Token no válido",
-    });
+    throw new Error("Token no válido");
   }
-
-  next();
 }

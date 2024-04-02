@@ -29,7 +29,7 @@ articleRouter.post(
       .isString()
       .withMessage("El contenido tiene que ser texto"),
     check("imgURL", "La imagen tiene que ser una URL").isURL().optional(),
-    validateJWT,
+    check("x-Token").custom(validateJWT),
     validateFields,
   ],
   articleController.createArticle
@@ -46,7 +46,7 @@ articleRouter.put(
     check("title", "El título tiene que ser un string").isString().optional(),
     check("content", "El contenido tiene que ser texto").isString().optional(),
     check("imgURL", "La imagen tiene que ser una URL").isURL().optional(),
-    validateJWT,
+    check("x-Token").custom(validateJWT),
     validateFields,
   ],
   articleController.updateArticle
@@ -60,7 +60,7 @@ articleRouter.put(
       .withMessage("El id es obligatorio")
       .isMongoId()
       .withMessage("El id no es un id de mongo válido"),
-    validateJWT,
+    check("x-Token").custom(validateJWT),
     validateFields,
   ],
   articleController.softDeleteArticle
@@ -69,12 +69,12 @@ articleRouter.put(
 articleRouter.delete(
   "/delete/:id",
   [
+    check("x-Token").custom(validateJWT),
     check("id")
       .notEmpty()
       .withMessage("El id es obligatorio")
       .isMongoId()
       .withMessage("El id no es un id de mongo válido"),
-    validateJWT,
     validateFields,
   ],
   articleController.deleteArticle
