@@ -22,6 +22,8 @@ export async function validateJWT(
       return res.status(400).json({
         message: "El usuario no está autorizado",
       });
+
+    next();
   } catch (error) {
     console.log(error);
     res.status(401).json({

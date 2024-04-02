@@ -4,8 +4,7 @@ import { collections } from "../database/database";
 import { generateJWT } from "../helpers/generateJwt";
 
 const login = async (req: Request, res: Response) => {
-  let { email, password } = req.body,
-    data;
+  let { email, password } = req.body;
 
   try {
     const existsUser: any = await collections.users.findOne({ email: email });
@@ -35,10 +34,6 @@ const login = async (req: Request, res: Response) => {
       message: "Error al iniciar sesión",
     });
   }
-
-  return res.status(200).json({
-    message: "Loggin successful",
-  });
 };
 
 export const authController = {

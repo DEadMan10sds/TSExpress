@@ -4,7 +4,7 @@ interface ImageItem {
 }
 
 interface Content {
-  paragraph: string;
+  paragraph?: string;
   image?: ImageItem[];
   list?: string[];
 }
