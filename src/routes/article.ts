@@ -7,8 +7,11 @@ import { validateJWT } from "../middlewares/validateJWT";
 export const articleRouter = Router();
 
 articleRouter.get(
-  "/:id?",
-  [check("id").optional().isMongoId(), validateFields],
+  "/get/:id?",
+  [
+    check("id").isMongoId().withMessage("El id no es un id válido").optional(),
+    validateFields,
+  ],
   articleController.getArticles
 );
 
@@ -46,11 +49,11 @@ articleRouter.put(
     validateJWT,
     validateFields,
   ],
-  articleController.createArticle
+  articleController.updateArticle
 );
 
 articleRouter.put(
-  "/soft/:id",
+  "/deactivate/:id",
   [
     check("id")
       .notEmpty()

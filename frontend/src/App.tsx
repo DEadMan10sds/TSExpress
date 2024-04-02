@@ -3,6 +3,7 @@ import { MainLayout } from "./layouts/main/MainLayout";
 import { Home } from "./pages/Home/Home";
 import { InformationDisplay } from "./components/informationDisplay/informationDisplay.tsx";
 import { content } from "./data/data.ts";
+import { JwtComponent } from "./pages/jwt/Jwt.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,26 +18,30 @@ const router = createBrowserRouter([
             element: <InformationDisplay data={content.home} />,
           },
           {
-            path: "/usage",
+            path: "usage",
             element: <InformationDisplay data={content.usage} />,
           },
           {
-            path: "/architecture",
+            path: "architecture",
             element: <InformationDisplay data={content.architecture} />,
           },
           {
-            path: "/crudOperations",
+            path: "crudOperations",
             element: <InformationDisplay data={content.crudOperations} />,
           },
           {
-            path: "/authentication",
+            path: "authentication",
             element: <InformationDisplay data={content.authentication} />,
           },
           {
-            path: "/deploy",
+            path: "deploy",
             element: <InformationDisplay data={content.deploy} />,
           },
         ],
+      },
+      {
+        path: "/*",
+        element: <JwtComponent />,
       },
     ],
   },

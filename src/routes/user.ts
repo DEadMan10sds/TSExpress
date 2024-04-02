@@ -23,7 +23,7 @@ userRouter.post(
       .withMessage("El correo no cumple las condiciones de un correo")
       .notEmpty()
       .withMessage("El correo es obligatorio"),
-    /*check("password")
+    check("password")
       .notEmpty()
       .withMessage("La contraseña es obligatoria")
       .isStrongPassword({
@@ -33,7 +33,7 @@ userRouter.post(
         minNumbers: 1,
         minSymbols: 1,
       })
-      .withMessage("La contraseña es débil"),*/
+      .withMessage("La contraseña es débil"),
     check("name")
       .notEmpty()
       .withMessage("El nombre es obligatorio")
@@ -47,6 +47,7 @@ userRouter.post(
 userRouter.put(
   "/update/:id",
   [
+    validateJWT,
     check("id")
       .isMongoId()
       .withMessage("El id no es un id válido")
@@ -54,7 +55,8 @@ userRouter.put(
       .withMessage("El id es obligatorio"),
     check("email")
       .isEmail()
-      .withMessage("El correo no cumple las condiciones de un correo"),
+      .withMessage("El correo no cumple las condiciones de un correo")
+      .optional(),
     check("password")
       .isStrongPassword({
         minLength: 8,
@@ -63,11 +65,12 @@ userRouter.put(
         minNumbers: 1,
         minSymbols: 1,
       })
-      .withMessage("La contraseña es débil"),
+      .withMessage("La contraseña es débil")
+      .optional(),
     check("name")
       .isString()
-      .withMessage("El nombre tiene que ser una cadena de texto"),
-    validateJWT,
+      .withMessage("El nombre tiene que ser una cadena de texto")
+      .optional(),
     validateFields,
   ],
   userController.updateUser

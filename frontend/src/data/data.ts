@@ -479,8 +479,8 @@ const crudOperations: Information[] = [
         list: [
           "Create: POST, nos permite generar un nuevo documento de la colección elegida.",
           "Read: GET, esta solicitud es especial ya que nos permite manejar la búsqueda tanto expecífica (por id o queries) como general (la obtención de todos los documentos de una colección).",
-          "Update: POST, actualiza un documento en específico.",
-          "softDelete: DELETE, al igual que la operación Read, esta solicitud también es especial ya que nos permite desactivar un documento en específico para que sea ignorado en la búsqueda por defecto del resto de operaciones.",
+          "Update: PUT, actualiza un documento en específico.",
+          "softDelete: PUT, al igual que la operación Read, esta solicitud también es especial ya que nos permite desactivar un documento en específico para que sea ignorado en la búsqueda por defecto del resto de operaciones.",
           "Delete: DELETE. elimina completamente un documento específico, no es recomendable usarlo comúnmente.",
         ],
       },
@@ -570,7 +570,7 @@ const deploy: Information[] = [
     ],
   },
   {
-    title: "Posibles errores",
+    title: "Posibles errores de servidores",
     content: [
       {
         paragraph:
@@ -579,6 +579,19 @@ const deploy: Information[] = [
       {
         paragraph:
           "De igual manera, la instancia de la base de datos puede llegar a apagarse de manera automática, por lo que también se solicita que en dado caso, ponerse en contacto conmigo para hacer una revisión y las correcciones necesarias.",
+      },
+    ],
+  },
+  {
+    title: "Errores de interacción de tecnología",
+    content: [
+      {
+        paragraph:
+          "Existen rutas (POST, PUT y DELETE) que pueden generar un ciclo de redireccionamiento ya que en teoría deberían redireccionar a la pantalla de error generada en la build de React sin embargo al hacer la solicitud desde postman o insomnia se dispara este errror.",
+      },
+      {
+        paragraph:
+          "Así mismo, el redireccionamiento a la página principal (en las rutas que no existen) debería regresar un 404 como estatus sin embargo no lo hace.",
       },
     ],
   },

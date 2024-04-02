@@ -71,9 +71,6 @@ const createArticle = async (req: Request, res: Response) => {
 const updateArticle = async (req: Request, res: Response) => {
   const id = new ObjectId(req.params.id);
   const data = req.body;
-  // if(!id) return res.status(400).json({
-  //   message: "El id el artículo es obligatorio"
-  // })
 
   try {
     const updatedArticle = await collections.articles.findOneAndUpdate(

@@ -82,11 +82,13 @@ const updateUser = async (req: Request, res: Response) => {
       { _id: new ObjectId(id) },
       {
         $set: data,
-      },
-      {
-        upsert: true,
       }
     );
+
+    if (!updatedUser)
+      return res.status(400).json({
+        message: "El usuario no existe",
+      });
 
     return res.status(200).json({
       message: "Usuario encontrado",
@@ -106,6 +108,11 @@ const deleteUser = async (req: Request, res: Response) => {
 
   try {
     const deletedUser = await collections.users.findOneAndDelete({ _id: id });
+
+    if (!deletedUser)
+      return res.status(400).json({
+        message: "El usuario no existe",
+      });
 
     return res.status(200).json({
       message: "Usuario eliminado",
@@ -128,6 +135,11 @@ const softDeleteUser = async (req: Request, res: Response) => {
       { $set: { active: false } },
       { upsert: true }
     );
+
+    if (!deactivateUser)
+      return res.status(400).json({
+        message: "El usuario no existe",
+      });
 
     return res.status(200).json({
       message: "Usuario eliminado",
