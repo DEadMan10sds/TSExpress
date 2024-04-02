@@ -25,20 +25,16 @@ const router = createBrowserRouter([
             element: <InformationDisplay data={content.architecture} />,
           },
           {
-            path: "/front",
-            element: <InformationDisplay data={content.front} />,
-          },
-          {
-            path: "/deploy",
-            element: <InformationDisplay data={content.deploy} />,
+            path: "/crudOperations",
+            element: <InformationDisplay data={content.crudOperations} />,
           },
           {
             path: "/authentication",
             element: <InformationDisplay data={content.authentication} />,
           },
           {
-            path: "/crudOperations",
-            element: <InformationDisplay data={content.crudOperations} />,
+            path: "/deploy",
+            element: <InformationDisplay data={content.deploy} />,
           },
         ],
       },

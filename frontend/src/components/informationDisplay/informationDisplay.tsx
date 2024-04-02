@@ -28,14 +28,14 @@ export function InformationDisplay(props: { data: Information[] }) {
                       </ul>
                     )}
                     {section.image && (
-                      <div className="m-4 flex gap-4">
+                      <div className="m-4 flex flex-col md:flex-row gap-4">
                         {section.image.map((img, imgIndex) => {
                           return (
                             <img
                               key={imgIndex}
                               src={img.src}
                               alt={img.alt}
-                              className="h-full max-h-64"
+                              className="h-full max-h-64 max-w-64"
                             />
                           );
                         })}

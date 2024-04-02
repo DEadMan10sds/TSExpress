@@ -262,7 +262,7 @@ const architecture: Information[] = [
       },
       {
         paragraph:
-          "Esto nos permite que en caso de que queramos hacer un escalado horizontal, podemos añadir el como parámetro del constructor el puerto que tomará el servidor y hacer N instancias que necesitemos dentronde un mismo servidor, de igual manera se pueden instanciar diversos servidores en alguna plataforma que permita esto como lo puede ser Kubernetes.",
+          "Esto nos permite que en caso de que queramos hacer un escalado horizontal, podemos añadir el como parámetro del constructor el puerto que tomará el servidor y hacer N instancias que necesitemos dentro de un mismo servidor, de igual manera se pueden instanciar diversos servidores en alguna plataforma que permita esto como lo puede ser Kubernetes.",
       },
     ],
   },
@@ -310,7 +310,7 @@ const architecture: Information[] = [
       },
       {
         paragraph:
-          "Posteriormente se hace un recorre dicho objeto para verificar si la colección a la que se quiere aplicar cada validador existe, en caso de hacerlo sobreescribe los validadores (con el validador especificado en el objeto principal) o en su defecto, crea la colección y establece dicho validador.",
+          "Posteriormente se hace un recorrido a dicho objeto para verificar si la colección a la que se quiere aplicar cada validador existe, en caso de hacerlo sobreescribe los validadores (con el validador especificado en el objeto principal) o en su defecto, crea la colección y establece dicho validador.",
         image: [
           {
             src: "/applicationOfValidatiors.png",
@@ -325,7 +325,7 @@ const architecture: Information[] = [
     content: [
       {
         paragraph:
-          "Para cada sección de la API, se generó un router o 'subdominio' específico donde se definen todas las rutass a las que se pueden acceder, su tipo de solicitud y el controlador que les pertenece, esto nos da la posiblidada de incrementar la cantidad de secciones que se pueden tener el el servidor ya que cada una es independiente de las demás (llegando a recordar la arquitectura de microservicios pero manteniendo una sola base de datos).",
+          "Para cada sección de la API, se generó un router o 'subdominio' específico donde se definen todas las rutas a las que se pueden acceder, su tipo de solicitud y el controlador que les pertenece, esto nos da la posiblidad de incrementar la cantidad de secciones que se pueden tener el el servidor ya que cada una es independiente de las demás (llegando a recordar la arquitectura de microservicios pero manteniendo una sola base de datos).",
       },
     ],
   },
